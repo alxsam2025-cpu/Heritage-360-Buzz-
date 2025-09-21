@@ -1,13 +1,11 @@
 {
   "version": 2,
-  "name": "heritage360buzz",
   "buildCommand": "cd client && npm run build",
   "outputDirectory": "client/build",
   "installCommand": "npm install && cd client && npm install",
   "functions": {
     "api/**/*.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 30
+      "runtime": "nodejs20.x"
     }
   },
   "env": {

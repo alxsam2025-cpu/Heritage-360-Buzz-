@@ -51,8 +51,13 @@ if (process.env.NODE_ENV === 'development') {
 // Database connection
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/heritage360buzz');
     console.log(`MongoDB Connected: ${conn.connection.host}`);
+    
+    // Auto-seed demo users if none exist
+    const { autoSeed } = require('./seed');
+    await autoSeed();
+    
   } catch (error) {
     console.error('Database connection error:', error);
     process.exit(1);

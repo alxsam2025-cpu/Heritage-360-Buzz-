@@ -268,8 +268,7 @@ const Login = () => {
             transition={{ duration: 0.8, delay: 0.4, type: "spring", stiffness: 100 }}
             className="w-full max-w-md mx-auto"
           >
-            <motion.div 
-              whileHover={{ y: -5 }}
+            <div 
               className="backdrop-blur-lg bg-white/90 dark:bg-gray-900/90 rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/50 overflow-hidden"
             >
               {/* Header with gradient background */}
@@ -352,38 +351,44 @@ const Login = () => {
                     </div>
                   </motion.div>
 
-                  <div>
-                    <label htmlFor="password" className="form-label">
-                      Password
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 1.2 }}
+                  >
+                    <label htmlFor="password" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                      🔐 Password
                     </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Lock className="h-5 w-5 text-gray-400" />
+                    <div className="relative group">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                        <Lock className="h-5 w-5 text-gray-400 group-focus-within:text-yellow-500 transition-colors duration-200" />
                       </div>
-                      <input
+                      <motion.input
+                        whileFocus={{ scale: 1.02 }}
                         id="password"
                         name="password"
                         type={showPassword ? 'text' : 'password'}
                         autoComplete="current-password"
                         required
-                        className="form-input pl-10 pr-10"
+                        className="block w-full pl-12 pr-12 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500 dark:focus:border-yellow-400 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-gray-100 transition-all duration-200"
                         placeholder="Enter your password"
                         value={formData.password}
                         onChange={handleChange}
                       />
                       <button
                         type="button"
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center z-10"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
-                          <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                          <EyeOff className="h-5 w-5 text-gray-400 hover:text-yellow-500 transition-colors duration-200" />
                         ) : (
-                          <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                          <Eye className="h-5 w-5 text-gray-400 hover:text-yellow-500 transition-colors duration-200" />
                         )}
                       </button>
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-yellow-400/0 via-orange-500/0 to-yellow-400/0 group-focus-within:from-yellow-400/5 group-focus-within:via-orange-500/5 group-focus-within:to-yellow-400/5 transition-all duration-300 pointer-events-none" />
                     </div>
-                  </div>
+                  </motion.div>
 
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -405,26 +410,36 @@ const Login = () => {
               </div>
 
               {/* Demo Credentials */}
-              <div className="card-footer">
+              <div className="px-8 py-6 border-t border-white/10 bg-gradient-to-br from-gray-50/50 to-white/50 dark:from-gray-800/50 dark:to-gray-900/50">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                    Demo Credentials:
-                  </p>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
+                  <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.4 }}
+                    className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4"
+                  >
+                    ✨ Quick Demo Access:
+                  </motion.p>
+                  <div className="grid grid-cols-2 gap-3 text-xs">
                     {demoCredentials.map((cred, index) => (
-                      <button
+                      <motion.button
                         key={index}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.5 + index * 0.1 }}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
                         type="button"
                         onClick={() => fillDemoCredentials(cred.username, cred.password)}
-                        className="p-2 text-left bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded border transition-colors duration-200"
+                        className="p-3 text-left bg-white/80 dark:bg-gray-700/80 hover:bg-white dark:hover:bg-gray-600 rounded-xl border border-gray-200/50 dark:border-gray-600/50 transition-all duration-200 shadow-sm hover:shadow-md backdrop-blur-sm"
                       >
-                        <div className="font-medium text-gray-900 dark:text-gray-100">
+                        <div className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
                           {cred.role}
                         </div>
-                        <div className="text-gray-600 dark:text-gray-400">
+                        <div className="text-gray-600 dark:text-gray-400 text-xs">
                           {cred.username}
                         </div>
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                 </div>

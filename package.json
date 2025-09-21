@@ -11,7 +11,7 @@
     "build": "cd client && npm run build",
     "vercel-build": "cd client && npm run build",
     "install-all": "npm install && cd client && npm install",
-    "seed": "node server/utils/seeder.js",
+    "seed": "node server/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd client && npm install"
   },

@@ -1,12 +1,16 @@
 // API Configuration for Heritage 360 Buzz
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// For production, use relative URLs to work with Vercel routing
+export const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? '/api' 
+  : (process.env.REACT_APP_API_URL || 'http://localhost:5000/api');
 
 export const API_ENDPOINTS = {
   // Authentication
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
   LOGOUT: '/auth/logout',
-  PROFILE: '/auth/profile',
+  PROFILE: '/auth/me',
+  ME: '/auth/me',
   
   // Hotel Management
   ROOMS: '/hotel/rooms',

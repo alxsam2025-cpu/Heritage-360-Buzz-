@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { Eye, EyeOff, Lock, User, Building, Sparkles, Crown, Star, Shield, Award } from 'lucide-react';
+import { Eye, EyeOff, Lock, User, Building, Crown, Star, Shield, Award } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Login = () => {
@@ -14,7 +13,6 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { login, isLoading } = useAuth();
-  const { theme, isDarkMode } = useTheme();
 
   const handleChange = (e) => {
     setFormData({

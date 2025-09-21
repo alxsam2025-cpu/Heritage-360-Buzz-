@@ -9,7 +9,6 @@ import ThemeSelector from './ThemeSelector';
 const Dashboard = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [themeModalOpen, setThemeModalOpen] = useState(false);
-  const { user } = useAuth();
   const { isDarkMode } = useTheme();
 
   const toggleSidebar = () => {

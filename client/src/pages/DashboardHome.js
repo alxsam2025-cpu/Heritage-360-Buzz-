@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
 import {
   Hotel,
   UtensilsCrossed,
@@ -17,7 +16,6 @@ import {
 
 const DashboardHome = () => {
   const { user } = useAuth();
-  const { theme } = useTheme();
 
   const statsCards = [
     {

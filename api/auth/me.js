@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import { findUserById } from '../demo-data.js';
 
 // MongoDB connection
 let cachedConnection = null;
@@ -107,27 +108,28 @@ export default async function handler(req, res) {
     });
   }
 
+  // Get token from header
+  let token;
+  const authHeader = req.headers.authorization;
+  
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.substring(7);
+  }
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: 'Not authorized to access this route'
+    });
+  }
+
   try {
-    await connectDB();
-
-    // Get token from header
-    let token;
-    const authHeader = req.headers.authorization;
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      token = authHeader.substring(7);
-    }
-
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: 'Not authorized to access this route'
-      });
-    }
-
     try {
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Try database first
+      await connectDB();
       
       // Find user and exclude password
       const user = await User.findById(decoded.id).select('-password');
@@ -153,20 +155,40 @@ export default async function handler(req, res) {
           createdAt: user.createdAt
         }
       });
+    } catch (dbError) {
+      console.warn('Database connection failed, using demo data fallback:', dbError.message);
+      
+      // Fallback to demo data
+      const demoUser = findUserById(decoded.id);
+      
+      if (!demoUser || !demoUser.isActive) {
+        return res.status(401).json({
+          success: false,
+          message: 'User not found or inactive'
+        });
+      }
 
-    } catch (error) {
-      return res.status(401).json({
-        success: false,
-        message: 'Invalid token'
+      res.status(200).json({
+        success: true,
+        data: {
+          id: demoUser._id,
+          name: demoUser.name,
+          username: demoUser.username,
+          role: demoUser.role,
+          department: demoUser.department,
+          permissions: demoUser.permissions,
+          isActive: demoUser.isActive,
+          lastLogin: demoUser.lastLogin,
+          createdAt: demoUser.createdAt
+        },
+        demo: true
       });
     }
 
   } catch (error) {
-    console.error('Auth/me error:', error);
-    res.status(500).json({
+    return res.status(401).json({
       success: false,
-      message: 'Server Error',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      message: 'Invalid token'
     });
   }
 }

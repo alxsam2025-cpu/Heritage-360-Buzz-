@@ -1,5 +1,14 @@
-import { demoDatabase } from '../demo-data.js';
 import jwt from 'jsonwebtoken';
+
+// Demo pub menu data
+let pubMenu = [
+  { _id: 'pub_001', name: 'Club Beer', price: 8, currency: 'GHS', category: 'Local', stock: 50, available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'pub_002', name: 'Guinness', price: 12, currency: 'GHS', category: 'International', stock: 30, available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'pub_003', name: 'Akpeteshie', price: 15, currency: 'GHS', category: 'Local', stock: 25, available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'pub_004', name: 'Whiskey', price: 80, currency: 'GHS', category: 'International', stock: 10, available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'pub_005', name: 'Star Beer', price: 7, currency: 'GHS', category: 'Local', stock: 45, available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'pub_006', name: 'Hennessy', price: 150, currency: 'GHS', category: 'International', stock: 5, available: true, createdAt: new Date('2025-01-01') }
+];
 
 export default async function handler(req, res) {
   // Enable CORS

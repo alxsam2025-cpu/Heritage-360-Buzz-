@@ -1,5 +1,14 @@
-import { demoDatabase } from '../demo-data.js';
 import jwt from 'jsonwebtoken';
+
+// Demo restaurant menu data
+let restaurantMenu = [
+  { _id: 'menu_001', name: 'Jollof Rice', price: 25, currency: 'GHS', category: 'Local', available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'menu_002', name: 'Fried Chicken', price: 30, currency: 'GHS', category: 'Continental', available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'menu_003', name: 'Banku with Tilapia', price: 35, currency: 'GHS', category: 'Local', available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'menu_004', name: 'Pizza Margherita', price: 45, currency: 'GHS', category: 'Continental', available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'menu_005', name: 'Grilled Tilapia', price: 40, currency: 'GHS', category: 'Local', available: true, createdAt: new Date('2025-01-01') },
+  { _id: 'menu_006', name: 'Chicken & Chips', price: 35, currency: 'GHS', category: 'Continental', available: true, createdAt: new Date('2025-01-01') }
+];
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -39,7 +48,7 @@ export default async function handler(req, res) {
     case 'GET':
       // Get restaurant menu
       const { category } = req.query;
-      let menuItems = demoDatabase.restaurantMenu;
+      let menuItems = [...restaurantMenu];
       
       if (category) {
         menuItems = menuItems.filter(item => 
@@ -76,7 +85,7 @@ export default async function handler(req, res) {
         createdAt: new Date()
       };
 
-      demoDatabase.restaurantMenu.push(newMenuItem);
+      restaurantMenu.push(newMenuItem);
 
       return res.status(201).json({
         success: true,
@@ -89,7 +98,7 @@ export default async function handler(req, res) {
       const { id } = req.query;
       const updateData = req.body;
       
-      const itemIndex = demoDatabase.restaurantMenu.findIndex(item => item._id === id);
+      const itemIndex = restaurantMenu.findIndex(item => item._id === id);
       
       if (itemIndex === -1) {
         return res.status(404).json({
@@ -98,15 +107,15 @@ export default async function handler(req, res) {
         });
       }
 
-      demoDatabase.restaurantMenu[itemIndex] = {
-        ...demoDatabase.restaurantMenu[itemIndex],
+      restaurantMenu[itemIndex] = {
+        ...restaurantMenu[itemIndex],
         ...updateData,
         updatedAt: new Date()
       };
 
       return res.status(200).json({
         success: true,
-        data: demoDatabase.restaurantMenu[itemIndex],
+        data: restaurantMenu[itemIndex],
         message: 'Menu item updated successfully'
       });
 
@@ -114,7 +123,7 @@ export default async function handler(req, res) {
       // Delete menu item
       const { id: deleteId } = req.query;
       
-      const deleteIndex = demoDatabase.restaurantMenu.findIndex(item => item._id === deleteId);
+      const deleteIndex = restaurantMenu.findIndex(item => item._id === deleteId);
       
       if (deleteIndex === -1) {
         return res.status(404).json({
@@ -123,7 +132,7 @@ export default async function handler(req, res) {
         });
       }
 
-      const deletedItem = demoDatabase.restaurantMenu.splice(deleteIndex, 1)[0];
+      const deletedItem = restaurantMenu.splice(deleteIndex, 1)[0];
 
       return res.status(200).json({
         success: true,

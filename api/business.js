@@ -103,8 +103,18 @@ export default async function handler(req, res) {
     urlPath = '/' + (Array.isArray(req.query.slug) ? req.query.slug.join('/') : req.query.slug);
   }
   
+  // Debug logging
+  console.log('Business API Debug:', {
+    originalUrl: req.url,
+    urlPath,
+    query: req.query,
+    slug: req.query?.slug
+  });
+  
   const pathParts = urlPath.split('/').filter(part => part.length > 0);
   const [module, action] = pathParts;
+  
+  console.log('Parsed parts:', { module, action, pathParts });
 
   try {
     switch (module) {

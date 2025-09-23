@@ -95,7 +95,14 @@ export default async function handler(req, res) {
   }
 
   // Parse the URL to determine the module and action
-  const urlPath = req.url.replace('/api/business', '').replace(/^\?.*/, '');
+  // Handle both direct calls (/api/business) and catch-all routes (/api/business/*)
+  let urlPath = req.url.replace('/api/business', '').replace(/^\?.*/, '');
+  
+  // For catch-all routes, the query parameter has the slug
+  if (req.query && req.query.slug) {
+    urlPath = '/' + (Array.isArray(req.query.slug) ? req.query.slug.join('/') : req.query.slug);
+  }
+  
   const pathParts = urlPath.split('/').filter(part => part.length > 0);
   const [module, action] = pathParts;
 

@@ -4,14 +4,13 @@
   "description": "Comprehensive hotel, restaurant, and pub management system",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon server/index.js",
-    "client": "cd client && npm start",
+    "start": "cd client && npm start",
+    "dev": "cd client && npm start",
+    "dev-client": "cd client && npm start",
     "build": "cd client && npm run build",
     "vercel-build": "cd client && npm run build",
     "install-all": "npm install && cd client && npm install",
-    "seed": "node server/seed.js",
+    "deploy": "vercel --prod",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "cd client && npm install"
   },
